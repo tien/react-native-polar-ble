@@ -1,11 +1,8 @@
 name: Release
 
 on:
-  workflow_dispatch:
-    inputs:
-      dryRun:
-        required: false
-        type: boolean
+  pull_request:
+    branches: [main]
 
 jobs:
   release:
@@ -45,6 +42,5 @@ jobs:
       - run: yarn typescript
       - run: yarn lint
       - run: yarn prepare
-      - run: yarn release ${{ fromJSON(github.event.inputs.dryRun) && '--dry-run' || '' }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: git status
+      - run: git diff HEAD
